@@ -11,9 +11,10 @@ from auth.jwt_handler import verify_access_token
 
 router = APIRouter()
 
-# Endpoint de logout avec JWT (blacklist)
+
+# Endpoint de logout avec JWT (blacklist) et désactivation utilisateur
 @router.post("/logout")
-async def logout(request: Request):
+async def logout(request: Request, db=Depends(get_db)):
     auth_header = request.headers.get("authorization")
     if not auth_header or not auth_header.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Token manquant ou invalide")
@@ -21,8 +22,13 @@ async def logout(request: Request):
     payload = verify_access_token(token)
     if not payload:
         raise HTTPException(status_code=401, detail="Token invalide")
+    # Désactiver l'utilisateur (is_active = False)
+    username = payload.get("sub") or payload.get("username")
+    if not username:
+        raise HTTPException(status_code=400, detail="Impossible de trouver l'utilisateur dans le token")
+    result = await db["users"].update_one({"username": username}, {"$set": {"is_active": False}})
     add_token_to_blacklist(token)
-    return {"message": "Déconnexion réussie (token invalidé)"}
+    return {"message": "Déconnexion réussie (token invalidé, utilisateur désactivé)", "is_active": False}
 
 
 

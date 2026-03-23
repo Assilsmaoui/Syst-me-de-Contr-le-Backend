@@ -1,0 +1,2 @@
+Token JWT : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlbW5hIiwicm9sZSI6InVzZXIiLCJ1c2VyX2lkIjoiNjliMDEzNzRjZDcyY2ViMDg2ZmNiMzI3IiwiZXhwIjoxNzczNjY1NDIyfQ.87IazVSCM4qegQrrzyNGR-I4YCzsquIpFGAg_JlYf_M
+Token décodé : {'sub': 'emna', 'role': 'user', 'user_id': '69b01374cd72ceb086fcb327', 'exp': 1773665422}

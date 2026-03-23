@@ -1,4 +1,3 @@
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -10,6 +9,9 @@ from routers import auth
 from routers import users
 from routers import activity_logs
 from routers import pointage
+from routers import tasks
+from routers import notifications_ws
+from routers import send_notification
 
 
 app = FastAPI()
@@ -17,7 +19,7 @@ app = FastAPI()
 # Configuration CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Remplace * par l'URL de ton frontend en production
+    allow_origins=["http://localhost:4200"],  # Autorise seulement Angular en local
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -38,3 +40,8 @@ app.include_router(users.router)
 app.include_router(activity_logs.router)
  # Inclusion du router pointage
 app.include_router(pointage.router)
+# Inclusion du router tasks
+app.include_router(tasks.router)
+# Inclusion du router WebSocket
+app.include_router(notifications_ws.router)
+app.include_router(send_notification.router)
