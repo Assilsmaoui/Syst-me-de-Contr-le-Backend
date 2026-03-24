@@ -4,15 +4,23 @@ from auth.jwt_handler import create_access_token
 from datetime import timedelta
 
 def _password_digest(password: str) -> bytes:
-    # Accepte toute longueur/caractère de mot de passe sans limite bcrypt des 72 octets.
+    # Accepte toute longueur/caractère de mot de passe, remplace les caractères NUL par rien
+    if isinstance(password, str):
+        password = password.replace('\x00', '')
     return hashlib.sha256(password.encode("utf-8")).digest()
 
 def get_password_hash(password):
+    # Nettoyer le mot de passe de tout caractère NUL
+    if isinstance(password, str):
+        password = password.replace('\x00', '')
     digest = _password_digest(password)
     hashed = bcrypt.hashpw(digest, bcrypt.gensalt()).decode("utf-8")
     return f"sha256${hashed}"
 
 def verify_password(plain_password, hashed_password):
+    # Nettoyer le mot de passe de tout caractère NUL
+    if isinstance(plain_password, str):
+        plain_password = plain_password.replace('\x00', '')
     digest = _password_digest(plain_password)
     try:
         # Nouveau format: sha256$<bcrypt_hash>
