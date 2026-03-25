@@ -13,14 +13,18 @@ class TaskBase(BaseModel):
     class Config:
         extra = "allow"
 
+
 class TaskCreate(TaskBase):
     user_ids: List[str]
+    project_id: str
+
 
 
 class TaskOut(TaskBase):
     id: str
     status: str
     user_ids: list[str]
+    project_id: Optional[str] = None
 
     class Config:
         orm_mode = True

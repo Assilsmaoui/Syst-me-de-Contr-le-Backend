@@ -1,4 +1,6 @@
 from fastapi import FastAPI
+from dotenv import load_dotenv
+load_dotenv()
 from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi import Depends
@@ -12,6 +14,7 @@ from routers import pointage
 from routers import tasks
 from routers import notifications_ws
 from routers import send_notification
+from routers import projects
 
 
 app = FastAPI()
@@ -38,6 +41,8 @@ app.include_router(auth.router)
 app.include_router(users.router)
  # Inclusion du router activity_logs
 app.include_router(activity_logs.router)
+ # Inclusion du router projects
+app.include_router(projects.router)
  # Inclusion du router pointage
 app.include_router(pointage.router)
 # Inclusion du router tasks
